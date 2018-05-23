@@ -8,7 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		4C32B7F8D392D604315F512E /* Pods_RealmExperiment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E500A4633B38BC1FF46DF7A7 /* Pods_RealmExperiment.framework */; };
-		9D7371A920AABD1100FF099E /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7371A820AABD1100FF099E /* Models.swift */; };
+		9D4EA28820B527E000F3246F /* ToDo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D4EA28620B527E000F3246F /* ToDo.swift */; };
+		9D4EA28920B527E000F3246F /* ToDoList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D4EA28720B527E000F3246F /* ToDoList.swift */; };
+		9D4EA28B20B527F500F3246F /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D4EA28A20B527F500F3246F /* DatabaseManager.swift */; };
 		9DAE889A20A972F200A7C9B1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE889920A972F200A7C9B1 /* AppDelegate.swift */; };
 		9DAE889C20A972F200A7C9B1 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE889B20A972F200A7C9B1 /* MasterViewController.swift */; };
 		9DAE88A120A972F200A7C9B1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9DAE889F20A972F200A7C9B1 /* Main.storyboard */; };
@@ -17,7 +19,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		9D7371A820AABD1100FF099E /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		9D4EA28620B527E000F3246F /* ToDo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToDo.swift; sourceTree = "<group>"; };
+		9D4EA28720B527E000F3246F /* ToDoList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToDoList.swift; sourceTree = "<group>"; };
+		9D4EA28A20B527F500F3246F /* DatabaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		9DAE889620A972F200A7C9B1 /* RealmExperiment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RealmExperiment.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DAE889920A972F200A7C9B1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9DAE889B20A972F200A7C9B1 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -59,6 +63,16 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		9D4EA28520B527D000F3246F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9D4EA28620B527E000F3246F /* ToDo.swift */,
+				9D4EA28720B527E000F3246F /* ToDoList.swift */,
+				9D4EA28A20B527F500F3246F /* DatabaseManager.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		9DAE888D20A972F200A7C9B1 = {
 			isa = PBXGroup;
 			children = (
@@ -80,13 +94,13 @@
 		9DAE889820A972F200A7C9B1 /* RealmExperiment */ = {
 			isa = PBXGroup;
 			children = (
+				9D4EA28520B527D000F3246F /* Models */,
 				9DAE889920A972F200A7C9B1 /* AppDelegate.swift */,
 				9DAE889B20A972F200A7C9B1 /* MasterViewController.swift */,
 				9DAE889F20A972F200A7C9B1 /* Main.storyboard */,
 				9DAE88A220A972F300A7C9B1 /* Assets.xcassets */,
 				9DAE88A420A972F300A7C9B1 /* LaunchScreen.storyboard */,
 				9DAE88A720A972F300A7C9B1 /* Info.plist */,
-				9D7371A820AABD1100FF099E /* Models.swift */,
 			);
 			path = RealmExperiment;
 			sourceTree = "<group>";
@@ -205,9 +219,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D7371A920AABD1100FF099E /* Models.swift in Sources */,
 				9DAE889C20A972F200A7C9B1 /* MasterViewController.swift in Sources */,
+				9D4EA28B20B527F500F3246F /* DatabaseManager.swift in Sources */,
+				9D4EA28920B527E000F3246F /* ToDoList.swift in Sources */,
 				9DAE889A20A972F200A7C9B1 /* AppDelegate.swift in Sources */,
+				9D4EA28820B527E000F3246F /* ToDo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

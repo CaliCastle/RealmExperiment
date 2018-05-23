@@ -10,15 +10,9 @@ import UIKit
 import RealmSwift
 
 class MasterViewController: UITableViewController {
-
-    lazy var realm: Realm? = {
-        guard let realm = try? Realm() else { fatalError("Realm failed") }
-        
-        return realm
-    }()
     
-    lazy var todos: Results<Todo> = {
-        return realm!.objects(Todo.self)
+    lazy var todos: Results<ToDo> = {
+        return DatabaseManager.main.database.objects(ToDo.self)
     }()
     
     override func viewDidLoad() {
@@ -55,18 +49,25 @@ class MasterViewController: UITableViewController {
     fileprivate func saveTodo(name: String?) {
         guard let name = name else { return }
         
-        let newTodo = Todo()
-        newTodo.name = name
+        let newTodo = ToDo()
+        newTodo.beforeCreate()
+        newTodo.goal = name
         
-        try? realm?.write {
-            realm?.add(newTodo)
+        let database = DatabaseManager.main.database
+        
+        do {
+            try database.write {
+                database.add(newTodo)
+            }
+        } catch let error as NSError {
+            
         }
         
         tableView.reloadSections([0, 1], with: .automatic)
     }
 
-    fileprivate func filteredTodos(finished: Bool) -> [Todo] {
-        return todos.filter({ return $0.finished == finished })
+    fileprivate func filteredTodos(finished: Bool) -> [ToDo] {
+        return todos.filter({ return ($0.completedAt == nil) != finished })
     }
     
     // MARK: - Table View
@@ -76,7 +77,7 @@ class MasterViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return todos.filter({ return $0.finished == (section != 0) }).count
+        return todos.filter({ return ($0.completedAt == nil) != (section != 0) }).count
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -87,8 +88,8 @@ class MasterViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
 
         let todo = filteredTodos(finished: indexPath.section == 1)[indexPath.row]
-        cell.textLabel?.text = todo.name
-        cell.accessoryType = todo.finished ? .checkmark : .none
+        cell.textLabel?.text = todo.goal
+        cell.accessoryType = todo.completedAt == nil ? .none : .checkmark
         
         return cell
     }
@@ -100,21 +101,21 @@ class MasterViewController: UITableViewController {
             let alertController = UIAlertController(title: "Update name for todo item", message: nil, preferredStyle: .alert)
             alertController.addTextField { textField in
                 textField.placeholder = "Todo item"
-                textField.text = todo.name
+                textField.text = todo.goal
                 textField.autocapitalizationType = .sentences
                 textField.returnKeyType = .done
             }
             alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             alertController.addAction(UIAlertAction(title: "Add", style: .default, handler: { _ in
-                try? self.realm?.write {
-                    todo.name = alertController.textFields?.first?.text ?? ""
+                try? DatabaseManager.main.database.write {
+                    todo.goal = alertController.textFields?.first?.text ?? ""
                 }
             }))
             
             present(alertController, animated: true, completion: nil)
         } else {
-            try? realm?.write {
-                todo.finished = !todo.finished
+            try? DatabaseManager.main.database.write {
+                todo.completedAt = todo.completedAt == nil ? Date() : nil
             }
         }
         
@@ -130,8 +131,9 @@ class MasterViewController: UITableViewController {
         if editingStyle == .delete {
             let todo = filteredTodos(finished: indexPath.section == 1)[indexPath.row]
             
-            try? realm?.write {
-                realm?.delete(todo)
+            let database = DatabaseManager.main.database
+            try? database.write {
+                database.delete(todo)
             }
             
             tableView.deleteRows(at: [indexPath], with: .fade)
