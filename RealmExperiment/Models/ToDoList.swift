@@ -18,4 +18,11 @@ class ToDoList: Object {
     
     let todos = List<ToDo>()
     
+    public static func make() -> ToDoList {
+        let list = self.init()
+        list.id = UUID().uuidString
+        
+        return list
+    }
+    
 }

@@ -19,13 +19,13 @@ final class DatabaseManager {
         // Open the file in read-only mode as application bundles are not writeable
         readOnly: true)
     
-    public var database: Realm {
+    public private(set) lazy var database: Realm = {
         do {
             return try Realm()
         } catch let error as NSError {
             fatalError("Error when loading the realm database\n\(error.localizedDescription)")
         }
-    }
+    }()
     
     private init() {}
     

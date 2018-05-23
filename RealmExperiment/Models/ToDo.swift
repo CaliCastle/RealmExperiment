@@ -36,8 +36,11 @@ public class ToDo: Object {
     
     @objc dynamic var list: ToDoList?
 
-    public func beforeCreate() {
-        id = UUID().uuidString
+    public static func make() -> ToDo {
+        let todo = self.init()
+        todo.id = UUID().uuidString
+        
+        return todo
     }
 }
 

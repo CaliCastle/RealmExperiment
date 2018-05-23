@@ -7,5 +7,6 @@ target 'RealmExperiment' do
 
   # Pods for RealmExperiment
   pod 'RealmSwift'
+  pod 'Bond'
 
 end
