@@ -18,9 +18,8 @@ class TodoTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        navigationItem.rightBarButtonItem = self.editButtonItem
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewTodo(_:)))
-        navigationItem.rightBarButtonItem = addButton
+        navigationItem.rightBarButtonItems = [editButtonItem, addButton]
         
         title = todoList.name
         
@@ -39,6 +38,7 @@ class TodoTableViewController: UITableViewController {
                     tableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0)}), with: .automatic)
                     tableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
                                          with: .automatic)
+//                    tableView.reloadSections([0, 1], with: .automatic)
                 }, completion: nil)
             case .error(let error):
                 // An error occurred while opening the Realm file on the background worker thread
@@ -86,6 +86,10 @@ class TodoTableViewController: UITableViewController {
         }
     }
     
+    fileprivate func filterTodos(completed: Bool) -> [ToDo] {
+        return todoList.todos.filter { return completed ? $0.completedAt != nil : $0.completedAt == nil }
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -93,7 +97,7 @@ class TodoTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return todoList.todos.count
+        return filterTodos(completed: section != 0).count
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -104,7 +108,7 @@ class TodoTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell", for: indexPath)
 
         // Configure the cell...
-        let todo = todoList.todos[indexPath.row]
+        let todo = filterTodos(completed: indexPath.section == 1)[indexPath.row]
         
         cell.textLabel?.text = todo.goal
         cell.accessoryType = todo.completedAt == nil ? .none : .checkmark
@@ -116,6 +120,15 @@ class TodoTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let todo = filterTodos(completed: indexPath.section == 1)[indexPath.row]
+        
+        let database = DatabaseManager.main.database
+        try? database.write {
+            todo.completedAt = todo.completedAt == nil ? Date() : nil
+        }
     }
 
     // Override to support editing the table view.

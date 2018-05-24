@@ -127,11 +127,9 @@ class ListTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let list = todoLists[indexPath.row]
         
-        guard tableView.isEditing else {
-            performSegue(withIdentifier: "ShowTodo", sender: list)
-            
-            return
-        }
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        guard tableView.isEditing else { performSegue(withIdentifier: "ShowTodo", sender: list); return }
         
         let alertController = UIAlertController(title: "Update name for todo list", message: nil, preferredStyle: .alert)
         alertController.addTextField { textField in
