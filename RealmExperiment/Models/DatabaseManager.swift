@@ -9,6 +9,16 @@
 import Foundation
 import RealmSwift
 
+final public class AUUID {
+    
+    public let idString: String
+    
+    public init() {
+        idString = "\(UUID().uuidString)-\(Date().timeIntervalSince1970.hashValue)"
+    }
+    
+}
+
 final class DatabaseManager {
     
     static let main = DatabaseManager()
@@ -21,6 +31,7 @@ final class DatabaseManager {
     
     public private(set) lazy var database: Realm = {
         do {
+            
             return try Realm()
         } catch let error as NSError {
             fatalError("Error when loading the realm database\n\(error.localizedDescription)")
